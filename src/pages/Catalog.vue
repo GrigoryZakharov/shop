@@ -13,13 +13,14 @@ function getBrandTitle(brandId) {
   const found = brands.find(b => b.id === brandId)
   return found ? found.title : brandId
 }
+const baseUrl = import.meta.env.BASE_URL || '/'
 const productList = ref(products.map(p => ({
   id: p.id,
   title: p.title,
   brand: p.brand,
   brandTitle: getBrandTitle(p.brand),
   regular_price: p.regular_price,
-  image: p.image
+  image: p.image ? `${baseUrl.replace(/\/$/, '')}/${p.image.replace(/^\//, '')}` : null
 })))
 
 const filtered = computed(() => {
