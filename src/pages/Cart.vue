@@ -1,9 +1,15 @@
 <script setup>
 import { computed } from 'vue'
 import { useCart } from '../store/cart.js'
+import brands from '../assets/brands.json'
 import logo from '/images/logo.png'
 
 const { all, count, remove, setQty } = useCart()
+
+function getBrandTitle(brandId) {
+  const found = brands.find(b => b.id === brandId)
+  return found ? found.title : brandId
+}
 
 const items = all
 const total = computed(() => {
@@ -36,7 +42,7 @@ const total = computed(() => {
             <div class="item-info">
               <img :src="it.image" class="item-image" />
               <div class="item-details">
-                <div class="item-title">{{ it.brand }} / {{ it.title }}</div>
+                <div class="item-title">{{ getBrandTitle(it.brand) }} / {{ it.title }}</div>
                 <button @click="remove(it.id)" class="remove-btn">Remove</button>
               </div>
             </div>
