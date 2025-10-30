@@ -302,6 +302,7 @@ header img {
   }
   
   header nav img {
+    margin-top:6px;
     height: 30px;
     width: auto;
   }
