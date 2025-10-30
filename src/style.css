@@ -143,7 +143,8 @@ section{
   display: inline-block;
 }
 header img {
-  width:15vw;
+  margin-top:5px;
+  width:17vw;
   height:auto;
 }
 .cart-container {
