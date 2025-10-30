@@ -328,14 +328,14 @@ header img {
     font-size: 25px;
   }
   .Header-Cart img {
-    height: 30px;
+    width: 150px;
+    height:auto;
   }
   
   .item-image {
     width: 60px;
     height: auto;
   }
-  
   .qty-input {
     width: 60px;
     padding: 6px;
