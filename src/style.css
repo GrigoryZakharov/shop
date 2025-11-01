@@ -67,6 +67,7 @@ aside {
 .Brands button:hover {
   border-bottom: 2px solid black;
   color: var(--color-accent);
+  cursor: pointer;
 }
 section{
   display:grid;
@@ -115,13 +116,17 @@ section{
   min-width: fit-content;
   width: max-content;
   min-width: 40px; 
+  border-radius: 5px;
+  margin-top: 8px;
 }
-
 .Card button:hover{
   border-bottom: 2px solid var(--color-black);
   cursor: pointer;
   color: var(--color-accent);
   transition: all 300ms ease;
+}
+.option-buttons {
+  margin-right:5px;
 }
 .nav-cart {
   display: inline-block;
@@ -321,7 +326,7 @@ header img {
     height: 30px;
   }
   .cart-table {
-    font-size:20px;
+    font-size:15px;
   }
   .remove-btn {
     font-size: 20px;

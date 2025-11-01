@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useCart } from '../store/cart.js'
 import brands from '../assets/brands.json'
 import logo from '/images/logo.png'
+import getImg from '../components/ProductCard.vue'
 
 const { all, count, remove, setQty } = useCart()
 
@@ -18,6 +19,7 @@ const total = computed(() => {
     return sum + (items.qty * price)
   }, 0)
 })
+console.log(all.value)
 </script>
 
 <template>
@@ -26,7 +28,6 @@ const total = computed(() => {
     </header>
     <div class="cart-container">
     <h3>Shopping Cart ({{ count }})</h3>
-    
     <table class="cart-table">
       <thead>
         <tr>
@@ -43,6 +44,11 @@ const total = computed(() => {
               <img :src="it.image" class="item-image" />
               <div class="item-details">
                 <div class="item-title">{{ getBrandTitle(it.brand) }} / {{ it.title }}</div>
+                <template v-if="it.selectedOptions">
+                  <span>
+                    (Color: {{ it.selectedOptions.colorLabel }}, Size: {{ it.selectedOptions.sizeLabel }})
+                  </span>
+                </template>
                 <button @click="remove(it.id)" class="remove-btn">Remove</button>
               </div>
             </div>

@@ -13,6 +13,7 @@ function getBrandTitle(brandId) {
   const found = brands.find(b => b.id === brandId)
   return found ? found.title : brandId
 }
+
 const baseUrl = import.meta.env.BASE_URL || '/'
 const productList = ref(products.map(p => ({
   id: p.id,
@@ -20,7 +21,10 @@ const productList = ref(products.map(p => ({
   brand: p.brand,
   brandTitle: getBrandTitle(p.brand),
   regular_price: p.regular_price,
-  image: p.image ? `${baseUrl.replace(/\/$/, '')}/${p.image.replace(/^\//, '')}` : null
+  image: p.image ? `${baseUrl.replace(/\/$/, '')}/${p.image.replace(/^\//, '')}` : null,
+  configurable_options: p.configurable_options,
+  variants: p.variants,
+  type: p.type 
 })))
 
 const filtered = computed(() => {
@@ -29,7 +33,59 @@ const filtered = computed(() => {
 })
 
 const { add, count } = useCart()
-function addToCart(p) { add(p) }
+
+function addToCart(product, colorIndex, sizeIndex) {
+  if (product.type === 'simple') {
+    add({
+      id: product.sku,
+      title: product.title,
+      brand: product.brand,
+      regular_price: product.regular_price,
+      qty: 1,
+      image: product.image
+    })
+    return
+  }
+  const variant = product.variants.find(v =>
+    v.attributes.some(a => a.code === 'color' && a.value_index === colorIndex) &&
+    v.attributes.some(a => a.code === 'size' && a.value_index === sizeIndex)
+  )
+
+  if (!variant) {
+    alert('Please select a valid combination of color and size')
+    return
+  }
+
+  const colorLabel = colorIndex != null
+    ? product.configurable_options.find(o => o.attribute_code === 'color')
+        ?.values.find(v => v.value_index === colorIndex)?.label
+    : null
+
+  const sizeLabel = sizeIndex != null
+    ? product.configurable_options.find(o => o.attribute_code === 'size')
+        ?.values.find(v => v.value_index === sizeIndex)?.label
+    : null
+
+  const varImg = variant.product.image.replace('/image', '/shop/images')
+
+
+  console.log('Add:', colorIndex, sizeIndex)
+  add({
+    id: variant.product.sku,       
+    title: product.title,
+    brand: product.brand,
+    regular_price: product.regular_price,
+    qty: 1,
+    image: varImg,
+    selectedOptions: {
+       color: colorIndex,
+      colorLabel,
+      size: sizeIndex,
+      sizeLabel 
+    }
+  })
+}
+
 </script>
 
 <template>

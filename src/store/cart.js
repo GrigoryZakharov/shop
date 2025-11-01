@@ -4,13 +4,23 @@ const items = ref([])
 
 export function useCart() {
   function add(product) {
-    const found = items.value.find(i => i.id === product.id)
-    if (found) {
-      found.qty += 1
-    } else {
-      items.value.push({ id: product.id, title: product.title, brand: product.brand, qty: 1, regular_price: product.regular_price, image: product.image })
-    }
+  const uniqueId = product.selectedOptions
+    ? `${product.id}-${product.selectedOptions.color || 0}-${product.selectedOptions.size || 0}`
+    : product.id
+
+  const found = items.value.find(i => i.id === uniqueId)
+  if (found) {
+    found.qty += 1
+  } else {
+    items.value.push({
+      ...product,
+      id: uniqueId,
+      qty: 1,
+      
+    })
   }
+}
+
 
   function remove(productId) {
     const idx = items.value.findIndex(i => i.id === productId)
